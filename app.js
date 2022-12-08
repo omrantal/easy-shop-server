@@ -11,9 +11,9 @@ const errorHandler = require('./helpers/error-handler')
 app.use(cors());
 app.options('*', cors())
 
-// middleware
+// Middleware
 app.use(morgan('tiny'))
-app.use(jwt())
+app.use(jwt)
 app.use('/public/uploads', express.static(__dirname + '/public/uploads'))
 app.use(errorHandler);
 
@@ -23,7 +23,7 @@ const productsRoutes = require('./routes/products')
 const usersRoutes = require('./routes/users')
 const ordersRoutes = require('./routes/orders')
 
-const api = "mongodb+srv://omran-user:12345678as@cluster0.odsyv.mongodb.net/eshop-database?retryWrites=true&w=majority"
+const api = process.env.API_URL;
 
 app.use(`${api}/categories`, categoriesRoutes)
 app.use(`${api}/products`, productsRoutes)
@@ -31,7 +31,7 @@ app.use(`${api}/users`, usersRoutes)
 app.use(`${api}/orders`, ordersRoutes)
 
 // Database
-mongoose.connect(process.env.CONNECTION_STRING, {
+mongoose.connect("mongodb+srv://omran-user:12345678as@cluster0.odsyv.mongodb.net/eshop-database?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: 'eshop-database'
