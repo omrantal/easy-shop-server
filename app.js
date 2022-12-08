@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -13,7 +12,6 @@ app.use(cors());
 app.options('*', cors())
 
 // middleware
-app.use(bodyParser.json())
 app.use(morgan('tiny'))
 app.use(jwt())
 app.use('/public/uploads', express.static(__dirname + '/public/uploads'))
@@ -31,21 +29,6 @@ app.use(`${api}/categories`, categoriesRoutes)
 app.use(`${api}/products`, productsRoutes)
 app.use(`${api}/users`, usersRoutes)
 app.use(`${api}/orders`, ordersRoutes)
-
-/*app.get(`${api}/products`, (req, res) => {
-  const product = {
-    id: 1,
-    name: 'hair_dresser',
-    image: 'some_url'
-  }
-  res.send(product)
-})
-
-app.post(`${api}/products`, (req, res) => {
-  const newProduct = req.body
-  console.log(newProduct)
-  res.send(newProduct)
-})*/
 
 // Database
 mongoose.connect(process.env.CONNECTION_STRING, {
