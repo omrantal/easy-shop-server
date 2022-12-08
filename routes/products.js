@@ -37,7 +37,7 @@ router.get(`/`, async (req, res) => {
     categories = { category: req.query.categories.split(',') }
   }
 
-  const productList = await Product.find(categories).select('name image')
+  const productList = await Product.find(categories).populate('category')
 
   if (!productList) {
     res.status(500).json({ success: false })
@@ -87,7 +87,7 @@ router.post(`/`, uploadOptions.single('image'), async (req, res) => {
   if (!file) return res.status(400).send('No image in the request')
 
   const fileName = req.file.filename
-  const basePath = `${req.protocol}://${req.get('host')}/public/upload`;
+  const basePath = `${req.protocol}://${req.get('host')}/public/uploads`;
 
   let newProduct = new Product({
     name, description, richDescription, image: `${basePath}${fileName}`,
